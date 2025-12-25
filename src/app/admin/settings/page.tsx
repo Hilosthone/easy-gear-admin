@@ -3,16 +3,32 @@ import React from 'react'
 import { Save, User, Globe, Bell, ShieldCheck } from 'lucide-react'
 
 export default function SettingsPage() {
+  const handleGlobalSave = () => {
+    console.log('Saving all settings...')
+    // Add logic here to save all sections to your database
+  }
+
   return (
     <div className='max-w-4xl space-y-8'>
-      <div>
-        <h1 className='text-2xl font-bold text-slate-800'>System Settings</h1>
-        <p className='text-slate-500'>
-          Configure your store and landing page preferences.
-        </p>
+      {/* 1. Header with Global Save Button */}
+      <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
+        <div>
+          <h1 className='text-2xl font-bold text-slate-800'>System Settings</h1>
+          <p className='text-slate-500'>
+            Configure your store and landing page preferences.
+          </p>
+        </div>
+
+        <button
+          onClick={handleGlobalSave}
+          className='flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-blue-200 active:scale-95'
+        >
+          <Save size={18} />
+          Save Changes
+        </button>
       </div>
 
-      {/* Landing Page Content Section */}
+      {/* 2. Landing Page Content Section */}
       <section className='bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden'>
         <div className='p-6 border-b border-slate-100 flex items-center gap-2'>
           <Globe className='text-blue-600' size={20} />
@@ -27,7 +43,7 @@ export default function SettingsPage() {
               <input
                 type='text'
                 defaultValue='Unleash Your Potential with Our Latest GEARS'
-                className='w-full p-2.5 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500 outline-none'
+                className='w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all'
               />
             </div>
             <div className='space-y-1.5'>
@@ -37,17 +53,18 @@ export default function SettingsPage() {
               <textarea
                 rows={3}
                 defaultValue='Discover our newest collection designed for athletes who strive for excellence. Elevate your performance.'
-                className='w-full p-2.5 border border-slate-200 rounded-lg focus:ring-1 focus:ring-blue-500 outline-none resize-none'
+                className='w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none transition-all'
               />
             </div>
           </div>
-          <button className='bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all'>
+          <button className='flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all'>
+            <Save size={16} />
             Update Landing Page
           </button>
         </div>
       </section>
 
-      {/* Admin Profile Section */}
+      {/* 3. Admin Profile Section */}
       <section className='bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden'>
         <div className='p-6 border-b border-slate-100 flex items-center gap-2'>
           <User className='text-blue-600' size={20} />
@@ -61,7 +78,7 @@ export default function SettingsPage() {
             <input
               type='text'
               defaultValue='John Doe'
-              className='w-full p-2.5 border border-slate-200 rounded-lg outline-none'
+              className='w-full p-2.5 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all'
             />
           </div>
           <div className='space-y-1.5'>
@@ -71,13 +88,13 @@ export default function SettingsPage() {
             <input
               type='email'
               defaultValue='admin@easygear.ng'
-              className='w-full p-2.5 border border-slate-200 rounded-lg outline-none'
+              className='w-full p-2.5 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all'
             />
           </div>
         </div>
       </section>
 
-      {/* Preferences Section */}
+      {/* 4. Preferences Section */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='bg-white p-6 rounded-xl border border-slate-200 flex items-center justify-between'>
           <div className='flex items-center gap-3'>
