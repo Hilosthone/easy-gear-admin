@@ -1,7 +1,6 @@
 import StatCard from "@/components/admin/StatCard";
 import RecentOrders from "@/components/admin/RecentOrders";
 import SalesChart from "@/components/admin/SalesChart";
-import { ArrowUpRight, ShoppingBag, Users, CreditCard } from "lucide-react";
 
 export default function DashboardPage() {
   return (
