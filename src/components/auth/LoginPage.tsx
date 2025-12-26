@@ -21,12 +21,12 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
           className='space-y-5'
         >
           <div className='space-y-2'>
-            <label className='text-sm font-bold text-slate-700'>
+            <label className='text-sm font-bold text-slate-800'>
               Email Address
             </label>
             <div className='relative'>
               <Mail
-                className='absolute left-3 top-3 text-slate-400'
+                className='absolute left-3 top-3 text-slate-700'
                 size={18}
               />
               <input
@@ -39,10 +39,10 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-bold text-slate-700'>Password</label>
+            <label className='text-sm font-bold text-slate-900'>Password</label>
             <div className='relative'>
               <Lock
-                className='absolute left-3 top-3 text-slate-400'
+                className='absolute left-3 top-3 text-slate-800'
                 size={18}
               />
               <input
