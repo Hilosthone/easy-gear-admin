@@ -5,16 +5,41 @@ import { Lock, Mail, Eye, EyeOff, Loader2 } from 'lucide-react'
 export default function LoginPage({ onLogin }: { onLogin: () => void }) {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
 
-    // Simulate a network delay (1.5 seconds)
-    setTimeout(() => {
-      onLogin()
+    try {
+      // ✅ Using relative path to hit the Next.js API route
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        localStorage.setItem('easyGear_token', data.token)
+        localStorage.setItem('easyGear_auth', 'true')
+        localStorage.setItem('user_name', data.user.name)
+        localStorage.setItem('user_role', data.user.role)
+        onLogin()
+      } else {
+        setError(data.error || 'Login failed. Please try again.')
+      }
+    } catch (err) {
+      setError(
+        'Connection failed. Please check your internet or phone hotspot.'
+      )
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -27,46 +52,52 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
           <p className='text-slate-500 mt-2 font-medium'>Admin Portal Login</p>
         </div>
 
+        {error && (
+          <div className='mb-6 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center font-medium'>
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className='space-y-5'>
-          {/* Email Field */}
           <div className='space-y-2'>
             <label className='text-sm font-bold text-slate-900'>
               Email Address
             </label>
             <div className='relative'>
               <Mail
-                className='absolute left-3 top-3 text-slate-900'
+                className='absolute left-3 top-3 text-slate-400'
                 size={18}
               />
               <input
                 type='email'
                 required
-                disabled={isLoading}
-                className='w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-black placeholder:text-slate-400 disabled:bg-slate-50 disabled:text-slate-500'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl text-black'
                 placeholder='admin@easygear.com'
               />
             </div>
           </div>
 
-          {/* Password Field */}
           <div className='space-y-2'>
             <label className='text-sm font-bold text-slate-900'>Password</label>
             <div className='relative'>
               <Lock
-                className='absolute left-3 top-3 text-slate-900'
+                className='absolute left-3 top-3 text-slate-400'
                 size={18}
               />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
-                disabled={isLoading}
-                className='w-full pl-10 pr-12 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-black placeholder:text-slate-400 disabled:bg-slate-50 disabled:text-slate-500'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='w-full pl-10 pr-12 py-3 border border-slate-300 rounded-xl text-black'
                 placeholder='••••••••'
               />
               <button
                 type='button'
                 onClick={() => setShowPassword(!showPassword)}
-                className='absolute right-3 top-3 text-slate-400 hover:text-slate-900 transition-colors'
+                className='absolute right-3 top-3 text-slate-400'
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -76,13 +107,10 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
           <button
             type='submit'
             disabled={isLoading}
-            className='w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed'
+            className='w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2'
           >
             {isLoading ? (
-              <>
-                <Loader2 size={20} className='animate-spin' />
-                <span>Authenticating...</span>
-              </>
+              <Loader2 className='animate-spin' size={20} />
             ) : (
               'Sign In'
             )}

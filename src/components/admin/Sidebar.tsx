@@ -1,6 +1,6 @@
 'use client'
-import React from 'react'
-import { X, LogOut } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { X, LogOut, User as UserIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ADMIN_NAV_LINKS } from '@/constants/navigation'
@@ -13,6 +13,16 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname()
+  const [adminName, setAdminName] = useState('Admin')
+  const [adminRole, setAdminRole] = useState('Staff')
+
+  // Load admin details from localStorage on mount
+  useEffect(() => {
+    const name = localStorage.getItem('user_name')
+    const role = localStorage.getItem('user_role')
+    if (name) setAdminName(name)
+    if (role) setAdminRole(role)
+  }, [])
 
   const notifications: Record<string, number> = {
     Orders: 5,
@@ -22,18 +32,20 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
   const handleLogout = () => {
     localStorage.removeItem('easyGear_auth')
-    window.location.reload()
+    localStorage.removeItem('easyGear_token')
+    localStorage.removeItem('user_name')
+    localStorage.removeItem('user_role')
+    window.location.href = '/admin' // Redirect and refresh
   }
 
   return (
     <aside
       className={cn(
-        // We use 'fixed' for mobile but ensure there is no overlay.
-        // On large screens, 'sticky' keeps it in place while you scroll the dashboard.
         'fixed inset-y-0 left-0 z-[70] w-64 bg-blue-700 text-white flex flex-col transition-transform duration-300 transform lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen border-r border-blue-950 shadow-xl',
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
+      {/* Brand Logo */}
       <div className='p-8 flex items-center justify-between shrink-0'>
         <Link
           href='/admin'
@@ -49,10 +61,10 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         </button>
       </div>
 
+      {/* Navigation Links */}
       <nav className='flex-1 px-4 space-y-1 overflow-y-auto overflow-x-hidden custom-scrollbar'>
         {ADMIN_NAV_LINKS.map((link) => {
           const hasNotification = notifications[link.name]
-
           return (
             <Link
               key={link.name}
@@ -77,7 +89,6 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 />
                 <span className='font-medium'>{link.name}</span>
               </div>
-
               {hasNotification && (
                 <span
                   className={cn(
@@ -95,7 +106,20 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         })}
       </nav>
 
-      <div className='p-4 border-t border-blue-950 shrink-0'>
+      {/* Footer: User Profile & Logout */}
+      <div className='p-4 border-t border-blue-950 shrink-0 space-y-2'>
+        <div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-800/50 border border-white/5'>
+          <div className='w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0'>
+            <UserIcon size={16} />
+          </div>
+          <div className='min-w-0'>
+            <p className='text-xs font-bold truncate text-white'>{adminName}</p>
+            <p className='text-[10px] text-blue-300 uppercase tracking-wider font-medium'>
+              {adminRole}
+            </p>
+          </div>
+        </div>
+
         <button
           onClick={handleLogout}
           className='flex items-center gap-3 px-4 py-3 w-full rounded-xl text-sm font-medium text-white hover:bg-red-500/10 hover:text-red-400 transition-all group'

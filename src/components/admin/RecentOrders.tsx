@@ -1,6 +1,24 @@
 const orders = [
   { id: '#001', customer: 'John Doe', status: 'Delivered', amount: '₦45,000' },
   { id: '#002', customer: 'Sarah Smith', status: 'Pending', amount: '₦12,500' },
+  {
+    id: '#003',
+    customer: 'Chinelo Okoro',
+    status: 'Shipped',
+    amount: '₦85,000',
+  },
+  {
+    id: '#004',
+    customer: 'Babajide Sowande',
+    status: 'Delivered',
+    amount: '₦22,000',
+  },
+  {
+    id: '#005',
+    customer: 'Aminu Ibrahim',
+    status: 'Processing',
+    amount: '₦150,000',
+  },
 ]
 
 export default function RecentOrders() {

@@ -33,7 +33,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
           <Bell size={22} className='group-hover:text-blue-600' />
           {/* Notification Badge */}
           <span className='absolute top-1.5 right-1.5 w-4 h-4 bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white'>
-            3
+            5
           </span>
         </button>
 
@@ -44,7 +44,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
         <div className='flex items-center gap-3 cursor-pointer group'>
           <div className='text-right hidden sm:block'>
             <p className='text-sm font-bold text-slate-800 leading-none'>
-              Hilosthone
+              Sir Victor
             </p>
             <span className='text-[10px] text-orange-600 font-bold uppercase tracking-wider bg-orange-50 px-1.5 py-0.5 rounded mt-1 inline-block border border-orange-100'>
               Super Admin
